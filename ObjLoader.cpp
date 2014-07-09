@@ -35,8 +35,7 @@ const GLTriangleBatch ObjLoader::getBatch(std::string fname)
 	std::vector<ObjLoader::TextureCoordinate> textureCoordinates;
     
     std::ifstream ifs(fname.c_str());
-    
-    while (!ifs.eof())
+    while (!(ifs.eof()) && ifs.good())
     {
         std::string propType;
         ifs>>propType;
@@ -62,6 +61,7 @@ const GLTriangleBatch ObjLoader::getBatch(std::string fname)
         {
             std::getline(ifs, propType);
         }
+        //std::cout<<ifs.good()<<ifs.bad()<<ifs.fail()<<ifs.eof()<<std::endl;
     }
     
     batch.BeginMesh(3*3*faces.size());

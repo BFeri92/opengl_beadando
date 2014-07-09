@@ -23,10 +23,10 @@ class Game{
 		void initStateTwo();
 		void render();
 		EventHandler& getEventHandler();
-		void moveCameraFwd();
-		void moveCameraBack();
-		void moveCameraRight();
-		void moveCameraLeft();
+		void moveCameraFwd(float amount);
+		void moveCameraBack(float amount);
+		void moveCameraRight(float amount);
+		void moveCameraLeft(float amount);
 		void followCar(int id);
 };
 #endif

@@ -3,19 +3,21 @@
 #include <GLTools.h>	// OpenGL toolkit
 #include <math3d.h>
 #include <iostream>
+#include <GLTriangleBatch.h>
 
-class Sphere : public Drawable
+class MeshTest : public Drawable
 {
 	private:
-		GLTriangleBatch sphere;
+		GLTriangleBatch mesh;
 	public:
-		Sphere()
+		MeshTest(GLTriangleBatch _mesh)
 		{
-			gltMakeSphere(sphere, 1.0f, 52, 26);
+			mesh=_mesh;
+			//gltMakeSphere(sphere, 1.0f, 52, 26);
 		}
 		virtual void paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMatrix)
 		{
-			std::cout<<"Painting sphere"<<std::endl;
+			//std::cout<<"Painting sphere"<<std::endl;
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 			static const GLfloat vGreen[] = { 0.0f, 1.0f, 0.0f, 1.0f };
 			GLShaderManager shaderManager;
@@ -31,7 +33,8 @@ class Sphere : public Drawable
 			m3dMatrixMultiply44(mvpMatrix, projectionMatrix, viewMatrix);
 			shaderManager.UseStockShader(GLT_SHADER_FLAT, mvpMatrix, vGreen);
 			//shaderManager.UseStockShader(GLT_SHADER_IDENTITY, vGreen);
-			sphere.Draw();
+			mesh.Draw();
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
 };
+
