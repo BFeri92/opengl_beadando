@@ -4,7 +4,8 @@
 #include <GLMatrixStack.h>
 
 class Drawable{
-	virtual void paint(const GLMatrixStack& modelMatrix, const GLMatrixStack& viewMatrix) = 0;
+	public:
+		virtual void paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMatrix) = 0;
 };
 
 #endif

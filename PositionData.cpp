@@ -5,5 +5,5 @@
     PositionData::PositionData(GLint _x,GLint _y,GLdouble _alfa){
         x=_x;
         y=_y;
-        alfa=_afla;
+        alfa=_alfa;
     };

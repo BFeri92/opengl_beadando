@@ -10,4 +10,4 @@ class ObjLoader: public AbstractObjLoader {
 	public:
 		const GLTriangleBatch getBatch(std::string fname);
         
-}
+};

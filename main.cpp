@@ -1,4 +1,4 @@
-#include "AbstractOjbLoader.h"
+#include "AbstractObjLoader.h"
 #include "Game.h"
 #include <GLTools.h>
 #ifdef __APPLE__

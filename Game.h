@@ -13,6 +13,8 @@ class Game{
 		EventHandler* eventHandler;
 		std::vector<Drawable*> objectsToDraw;
 		static Game* instance;
+		GLFrame camera;
+		GLMatrixStack projectionMatrix;
 		Game();
 		~Game();
 	public:

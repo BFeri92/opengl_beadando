@@ -1,6 +1,8 @@
 #ifndef POSITIONDATA_H_INCLUDED
 #define POSITIONDATA_H_INCLUDED
 
+#include <GLTools.h>
+
 struct PositionData{
 GLint x;
 GLint y;

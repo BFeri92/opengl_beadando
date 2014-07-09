@@ -25,7 +25,7 @@ struct ObjLoader::TextureCoordinate
     float a,b;
 };
 
-const ObjLoader::GLTriangleBatch getBatch(std::string fname)
+const GLTriangleBatch ObjLoader::getBatch(std::string fname)
 {
 
     GLTriangleBatch batch;
@@ -50,7 +50,7 @@ const ObjLoader::GLTriangleBatch getBatch(std::string fname)
         {
             float v1,v2;
             ifs>>v1>>v2;
-            textureCoordinates.push_back(Vertex(v1,v2));
+            textureCoordinates.push_back(TextureCoordinate(v1,v2));
         }
         else if (propType=="f")
         {
