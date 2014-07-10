@@ -1,7 +1,7 @@
 #include "Coordinate.h"
 
 Coordinate::Coordinate(){};
-Coordinate::Coordinate(GLint _x ,GLint _y){
+Coordinate::Coordinate(GLdouble _x,GLdouble _y){
     x=_x;
     y=_y;
 }

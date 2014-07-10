@@ -4,11 +4,11 @@
 #include <GLTools.h>
 
 struct Coordinate{
-GLint x;
-GLint y;
+GLdouble x;
+GLdouble y;
 
 Coordinate();
-Coordinate(GLint _x ,GLint _y);
+Coordinate(GLdouble _x ,GLdouble _y);
 
 };
 #endif
