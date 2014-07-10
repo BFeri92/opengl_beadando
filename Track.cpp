@@ -5,37 +5,43 @@
 #include <iostream>
 #define PI 3.1415926535
 
-void Track::addControlPoint(Coordinate xy){
+void Track::addControlPoint(Coordinate xy)
+{
 
     controlPoints.push_back( Coordinate(xy));
 
 }
 
-double dist( Coordinate P1,Coordinate P2){
-            GLdouble t1 = P1.x - P2.x;
-            GLdouble t2 = P1.y - P2.y;
+double dist( Coordinate P1,Coordinate P2)
+{
+    GLdouble t1 = P1.x - P2.x;
+    GLdouble t2 = P1.y - P2.y;
 
-        return t1 * t1 + t2 * t2;
+    return t1 * t1 + t2 * t2;
 }
 
 
-int Track::getControlPointIndexAt(Coordinate xy, GLdouble r){
-        int distance=r*r;
+int Track::getControlPointIndexAt(Coordinate xy, GLdouble r)
+{
+    int distance=r*r;
 
-            for(int i=0;i<controlPoints.size();i++){
-                if( dist(xy,controlPoints[i]) < distance)
-                    return i;
-            }
+    for(int i=0; i<controlPoints.size(); i++)
+    {
+        if( dist(xy,controlPoints[i]) < distance)
+            return i;
+    }
     return -1;
 }
 
 
-void Track::setControlPointAtIndex(int index,Coordinate xy){
+void Track::setControlPointAtIndex(int index,Coordinate xy)
+{
 
-        controlPoints[index]=xy;
+    controlPoints[index]=xy;
 }
 
-void Track::setAfterFinalControlPointAtIndex(int index,Coordinate xy){
+void Track::setAfterFinalControlPointAtIndex(int index,Coordinate xy)
+{
 
     Coordinate P=controlPoints[index];
     Coordinate displacement;
@@ -46,9 +52,11 @@ void Track::setAfterFinalControlPointAtIndex(int index,Coordinate xy){
 
     if(index!=0 || index!=1 || index!=(controlPoints.size()-1) || index!=(controlPoints.size()-2) )
         controlPoints[index]=xy;
-    else{
+    else
+    {
 
-        if( index == 0 || index == (controlPoints.size()-1) ){
+        if( index == 0 || index == (controlPoints.size()-1) )
+        {
             controlPoints[0]=xy;
             controlPoints[(controlPoints.size()-1)]=xy;
 
@@ -58,7 +66,8 @@ void Track::setAfterFinalControlPointAtIndex(int index,Coordinate xy){
             controlPoints[(controlPoints.size()-2)].x+=displacement.x;
             controlPoints[(controlPoints.size()-2)].y+=displacement.y;
         }
-        if( index==1 ){
+        if( index==1 )
+        {
             controlPoints[1]=xy;
 
             controlPoints[0].x+=displacement.x;
@@ -72,7 +81,8 @@ void Track::setAfterFinalControlPointAtIndex(int index,Coordinate xy){
 
         }
 
-        if( index==(controlPoints.size()-2)){
+        if( index==(controlPoints.size()-2))
+        {
             controlPoints[(controlPoints.size()-2)]=xy;
 
             controlPoints[0].x+=displacement.x;
@@ -117,41 +127,46 @@ GLdouble DerB(GLdouble u,GLdouble i, GLdouble n)
     return Der;
 }
 
-Coordinate   Track::derivalt(GLdouble t,GLdouble R){
-Coordinate P;
-GLdouble    px=0;
-GLdouble    py=0;
-GLdouble    derx=0;
-GLdouble    dery=0;
+Coordinate   Track::derivalt(GLdouble t,GLdouble R)
+{
+    Coordinate P;
+    GLdouble    px=0;
+    GLdouble    py=0;
+    GLdouble    derx=0;
+    GLdouble    dery=0;
 
-    for(GLint i=0;i<controlPoints.size();i++){
+    for(GLint i=0; i<controlPoints.size(); i++)
+    {
         derx+=controlPoints[i].x * DerB(t,i,controlPoints.size()-1);
         dery+=controlPoints[i].y * DerB(t,i,controlPoints.size()-1);
     }
 
-        P.x=(derx/(sqrt(pow(derx,2)+pow(dery,2))) * R);
-        P.y=(dery/(sqrt(pow(derx,2)+pow(dery,2))) * R);
+    P.x=(derx/(sqrt(pow(derx,2)+pow(dery,2))) * R);
+    P.y=(dery/(sqrt(pow(derx,2)+pow(dery,2))) * R);
 
-return P;
+    return P;
 }
 
 
 
-Coordinate Track::bezier(GLdouble t){
-Coordinate P;
+Coordinate Track::bezier(GLdouble t)
+{
+    Coordinate P;
     P.x=0;
     P.y=0;
-    for(GLint i=0;i<controlPoints.size();i++){
+    for(GLint i=0; i<controlPoints.size(); i++)
+    {
         P.x+=controlPoints[i].x * B(t,i,controlPoints.size()-1);
         P.y+=controlPoints[i].y * B(t,i,controlPoints.size()-1);
     }
 
 
-return P;
+    return P;
 }
 //------------------------------------------------
 
-GLTriangleBatch* Track::getBatch(){
+GLTriangleBatch* Track::getBatch()
+{
     GLTriangleBatch* _track = new GLTriangleBatch();
 
     double number=1.0 / 0.01;
@@ -162,131 +177,149 @@ GLTriangleBatch* Track::getBatch(){
 
     _track->BeginMesh(2*3*number);
 
-        M3DVector3f vVertex[3];
-		M3DVector3f vNormal[3];
-		M3DVector2f vTexture[3];
+    M3DVector3f vVertex[3];
+    M3DVector3f vNormal[3];
+    M3DVector2f vTexture[3];
 
-        GLdouble step=0.01;
+    GLdouble step=0.01;
 
-		for(GLdouble t=0;t<1;t+=step){
-            Pd1=derivalt(t,trackWidth);
-            P1=bezier(t);
-            P1.x+=-1.0*Pd1.y;
-            P1.y+=Pd1.x;
+    for(GLdouble t=0; t<1; t+=step)
+    {
+        Pd1=derivalt(t,trackWidth);
+        P1=bezier(t);
+        P1.x+=-1.0*Pd1.y;
+        P1.y+=Pd1.x;
 
-            Pd2=derivalt(t,-1*trackWidth);
-            P2=bezier(t);
-            P2.x+=-1.0*Pd2.y;
-            P2.y+=Pd2.x;
+        Pd2=derivalt(t,-1*trackWidth);
+        P2=bezier(t);
+        P2.x+=-1.0*Pd2.y;
+        P2.y+=Pd2.x;
 
-            Pd11=derivalt(t+step,trackWidth);
-            P11=bezier(t+step);
-            P11.x+=-1.0*Pd11.y;
-            P11.y+=Pd11.x;
+        Pd11=derivalt(t+step,trackWidth);
+        P11=bezier(t+step);
+        P11.x+=-1.0*Pd11.y;
+        P11.y+=Pd11.x;
 
-            Pd22=derivalt(t+step,-1*trackWidth);
-            P22=bezier(t+step);
-            P22.x+=-1.0*Pd22.y;
-            P22.y+=Pd22.x;
+        Pd22=derivalt(t+step,-1*trackWidth);
+        P22=bezier(t+step);
+        P22.x+=-1.0*Pd22.y;
+        P22.y+=Pd22.x;
 
-            vVertex[0][0]=P1.x;
-            vVertex[0][1]=0;
-            vVertex[0][2]=P1.y;
+        vVertex[0][0]=P1.x;
+        vVertex[0][1]=0;
+        vVertex[0][2]=P1.y;
 
-            vVertex[1][0]=P2.x;
-            vVertex[1][1]=0;
-            vVertex[1][2]=P2.y;
+        vVertex[1][0]=P2.x;
+        vVertex[1][1]=0;
+        vVertex[1][2]=P2.y;
 
-            vVertex[2][0]=P22.x;
-            vVertex[2][1]=0;
-            vVertex[2][2]=P22.y;
+        vVertex[2][0]=P22.x;
+        vVertex[2][1]=0;
+        vVertex[2][2]=P22.y;
 
-            vNormal[0][0]=0.0f;
-            vNormal[0][1]=0.0f;
-            vNormal[0][2]=1.0f;
+        vNormal[0][0]=0.0f;
+        vNormal[0][1]=0.0f;
+        vNormal[0][2]=1.0f;
 
-            vNormal[1][0]=0.0;
-            vNormal[1][1]=0.0f;
-            vNormal[1][2]=1.0f;
+        vNormal[1][0]=0.0;
+        vNormal[1][1]=0.0f;
+        vNormal[1][2]=1.0f;
 
-            vNormal[2][0]=0.0f;
-            vNormal[2][1]=0.0f;
-            vNormal[2][2]=1.0f;
+        vNormal[2][0]=0.0f;
+        vNormal[2][1]=0.0f;
+        vNormal[2][2]=1.0f;
 
-            vTexture[0][0]=0.0f;
-            vTexture[0][1]=0.0f;
+        vTexture[0][0]=0.0f;
+        vTexture[0][1]=0.0f;
 
-            vTexture[1][0]=0.0f;
-            vTexture[1][1]=1.0f;
+        vTexture[1][0]=0.0f;
+        vTexture[1][1]=1.0f;
 
-            vTexture[2][0]=1.0f;
-            vTexture[2][1]=1.0f;
+        vTexture[2][0]=1.0f;
+        vTexture[2][1]=1.0f;
 
-            _track->AddTriangle(vVertex,vNormal,vTexture)  ;
+        _track->AddTriangle(vVertex,vNormal,vTexture)  ;
 
-            vVertex[0][0]=P1.x;
-            vVertex[0][1]=0;
-            vVertex[0][2]=P1.y;
+        vVertex[0][0]=P1.x;
+        vVertex[0][1]=0;
+        vVertex[0][2]=P1.y;
 
-            vVertex[1][0]=P11.x;
-            vVertex[1][1]=0;
-            vVertex[1][2]=P11.y;
+        vVertex[1][0]=P11.x;
+        vVertex[1][1]=0;
+        vVertex[1][2]=P11.y;
 
-            vVertex[2][0]=P22.x;
-            vVertex[2][1]=0;
-            vVertex[2][2]=P22.y;
+        vVertex[2][0]=P22.x;
+        vVertex[2][1]=0;
+        vVertex[2][2]=P22.y;
 
-             _track->AddTriangle(vVertex,vNormal,vTexture)  ;
+        _track->AddTriangle(vVertex,vNormal,vTexture)  ;
 
 
-		}
+    }
 
     _track->End();
 
- return _track;
+    return _track;
 }
-GLBatch* Track::getControlPointBatch(){
+GLBatch* Track::getControlPointBatch()
+{
 
     GLBatch* pointBatch = new GLBatch();
 
     pointBatch->Begin(GL_POINTS,controlPoints.size(),1);
 
-        for(GLint i=0;i<controlPoints.size();i++){
-            pointBatch->Normal3f(0.0f, 1.0f, 0.0f);
-            pointBatch->MultiTexCoord2f(0, 1.0f, 1.0f);
-            pointBatch->Vertex3f(controlPoints[i].x, 0, controlPoints[i].y);
-        }
+    for(GLint i=0; i<controlPoints.size(); i++)
+    {
+        pointBatch->Normal3f(0.0f, 1.0f, 0.0f);
+        pointBatch->MultiTexCoord2f(0, 1.0f, 1.0f);
+        pointBatch->Vertex3f(controlPoints[i].x, 0, controlPoints[i].y);
+    }
     pointBatch->End();
 
-return pointBatch;
+    return pointBatch;
 }
-PositionData Track::getCarPosition(GLdouble t,GLdouble r ){
+PositionData Track::getCarPosition(GLdouble t,GLdouble r )
+{
     PositionData pData;
     pData.x=0;
     pData.y=0;
     pData.alfa=0;
-    Coordinate way=Coordinate(0,1);
+
+    Coordinate way;
     Coordinate derBeta;
     GLdouble _alfa;
-	Coordinate P1,P2, Pd1,Pd2;
+
+    Coordinate P1,P2, Pd1,Pd2;
+
     Pd1=derivalt(t,r);
     P1=bezier(t);
+
     P1.x+=-1.0*Pd1.y;
     P1.y+=Pd1.x;
     pData.x=P1.x;
     pData.y=P1.y;
-    derBeta=derivalt(t,1);
-    _alfa= derBeta.x * way.x + derBeta.y * way.y;
-    pData.alfa+=acos (_alfa);
-    Coordinate a(0,1);
-    Coordinate b(0.5547, -0.83205);
-    //std::cout<<acos(a.x * b.x + a.y * b.y)*57.2957795<<std::endl;
-    std::cout<<":"<<_alfa<<';'<<pData.alfa*57.2957795<<std::endl;
 
-return pData;
+    derBeta=derivalt(t,1);
+
+    if(derBeta.x<0){
+        way=Coordinate(0,-1);
+
+        _alfa= derBeta.x * way.x + derBeta.y * way.y;
+        pData.alfa+=acos (_alfa);
+        pData.alfa+=PI;
+    }
+    if(derBeta.x>0){
+         way=Coordinate(0,1);
+
+        _alfa= derBeta.x * way.x + derBeta.y * way.y;
+        pData.alfa+=acos (_alfa);
+    }
+
+    return pData;
 }
 
-void Track::finalPoint(){
+void Track::finalPoint()
+{
     Coordinate P0,P1,P2;
 
     P1=controlPoints[0];
