@@ -4,6 +4,7 @@
 
 #include "Drawable.h"
 #include "PositionData.h"
+#include "Track_d.h"
 
 class Car : public Drawable
 {
@@ -12,17 +13,18 @@ class Car : public Drawable
 		CStopWatch timer;
 		PositionData pos;
 		GLTriangleBatch* batch;
+		Track& track;
 		double speed;
 		double positionOnTrack;
 		double horizPosOnTrack;
 		int speedChange;
 		static const double maxSpeed=0.1;
-		static const double speedIncPerSec=0.00001;
+		static const double speedIncPerSec=0.0000001;
 	public:
 		static const int KEEP_SPEED=0;
 		static const int FASTER=1;
 		static const int SLOWER=-1;
-		Car(GLTriangleBatch *_batch, double _horizPosOnTrack);
+		Car(GLTriangleBatch *_batch, double _horizPosOnTrack, Track& _track);
 		void paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMatrix);
 		void step();
 		void setSpeedChange(int _speedChange);
