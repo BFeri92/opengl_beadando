@@ -27,7 +27,7 @@ struct ObjLoader::TextureCoordinate
 
 GLTriangleBatch* ObjLoader::getBatch(std::string fname)
 {
-	std::cout << "aaaa" << std::endl;
+	//std::cout << "aaaa" << std::endl;
     GLTriangleBatch* batch = new GLTriangleBatch();
     
     std::vector<ObjLoader::Vertex> vertices;
@@ -39,7 +39,7 @@ GLTriangleBatch* ObjLoader::getBatch(std::string fname)
     {
         std::string propType;
         ifs>>propType;
-	std::cout << propType << std::endl;
+	//std::cout << propType << std::endl;
         if (propType=="v")
         {
             float c1,c2,c3;
@@ -57,7 +57,7 @@ GLTriangleBatch* ObjLoader::getBatch(std::string fname)
             int i1,i2,i3,t1,t2,t3;
 	    char c;
             ifs>>i1>>c>>t1>>i2>>c>>t2>>i3>>c>>t3;
-		std::cout << i1 << " " << t1 << " " << i2 << " " << t2 << " " << i3 << " " << t3 << std::endl;
+		//std::cout << i1 << " " << t1 << " " << i2 << " " << t2 << " " << i3 << " " << t3 << std::endl;
             faces.push_back(Face(i1,t1,i2,t2,i3,t3));
         }
         else

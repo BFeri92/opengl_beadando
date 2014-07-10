@@ -98,9 +98,10 @@ void Game::initStateTwo()
 		delete *i;
 	}
 	objectsToDraw.clear();
-	
-	camera.MoveForward(-500);
-	camera.MoveUp(20);
+	PositionData initialCamPos = track.getCarPosition(0,0);
+	std::cout<<initialCamPos.y<<".."<<initialCamPos.x<<std::endl;
+	camera.SetOrigin(initialCamPos.x, 40, initialCamPos.y);
+	camera.MoveForward(-200);
 	GLFrustum viewFrustum;
     viewFrustum.SetPerspective(35.0f, float(winWidth)/float(winHeight), .005f, 5000.0f);
     projectionMatrix.LoadMatrix(viewFrustum.GetProjectionMatrix());
@@ -164,12 +165,13 @@ void Game::moveCameraBack(float amount)
 
 void Game::moveCameraRight(float amount)
 {
-	camera.MoveRight(amount);
+	//camera.MoveRight(amount);
+	camera.RotateWorld(amount*0.01f, 0.0f, 1.0f, 0.0f);
 }
 
 void Game::moveCameraLeft(float amount)
 {
-	camera.MoveRight(-amount);
+	camera.RotateWorld(-amount*0.01f, 0.0f, 1.0f, 0.0f);
 }
 
 void Game::followCar(int id)
