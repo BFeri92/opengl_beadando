@@ -22,8 +22,22 @@ Game::Game() : eventHandler(new EventHandler)
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f );
     //glEnable(GL_CULL_FACE);
-	initStateTwo();
+//	initStateTwo();
+	camera.MoveForward(-10);
+	GLFrustum viewFrustum;
+    viewFrustum.SetPerspective(35.0f, 800.0/600.0, .005f, 5000.0f);
+    projectionMatrix.LoadMatrix(viewFrustum.GetProjectionMatrix());
+	ObjLoader loader;
+    MeshTest* asd=new MeshTest(loader.getBatch("car.obj"));
+	objectsToDraw.push_back(asd);
+	Car* car1=new Car(0,0);
+	Car* car2=new Car(0,0);
+	/*
+	objectsToDraw.push_back(car1);
+	objectsToDraw.push_back(car2);*/
 	
+	eventHandler = new StateTwoEventHandler(*car1,*car2);
+
 }
 
 Game::~Game()

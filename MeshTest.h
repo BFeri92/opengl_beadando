@@ -8,11 +8,11 @@
 class MeshTest : public Drawable
 {
 	private:
-		GLTriangleBatch mesh;
+		GLTriangleBatch* mesh;
 	public:
-		MeshTest(GLTriangleBatch _mesh)
+		MeshTest(GLTriangleBatch* _mesh) : mesh(_mesh)
 		{
-			mesh=_mesh;
+			//mesh=_mesh;
 			//gltMakeSphere(sphere, 1.0f, 52, 26);
 		}
 		virtual void paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMatrix)
@@ -33,7 +33,7 @@ class MeshTest : public Drawable
 			m3dMatrixMultiply44(mvpMatrix, projectionMatrix, viewMatrix);
 			shaderManager.UseStockShader(GLT_SHADER_FLAT, mvpMatrix, vGreen);
 			//shaderManager.UseStockShader(GLT_SHADER_IDENTITY, vGreen);
-			mesh.Draw();
+			mesh->Draw();
 			glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 		}
 };

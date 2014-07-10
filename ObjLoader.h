@@ -8,6 +8,6 @@ class ObjLoader: public AbstractObjLoader {
         struct TextureCoordinate;
     
 	public:
-		const GLTriangleBatch getBatch(std::string fname);
+		GLTriangleBatch* getBatch(std::string fname);
         
 };

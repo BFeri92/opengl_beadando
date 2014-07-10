@@ -25,10 +25,10 @@ struct ObjLoader::TextureCoordinate
     float a,b;
 };
 
-const GLTriangleBatch ObjLoader::getBatch(std::string fname)
+GLTriangleBatch* ObjLoader::getBatch(std::string fname)
 {
-
-    GLTriangleBatch batch;
+	std::cout << "aaaa" << std::endl;
+    GLTriangleBatch* batch = new GLTriangleBatch();
     
     std::vector<ObjLoader::Vertex> vertices;
 	std::vector<ObjLoader::Face> faces;
@@ -39,6 +39,7 @@ const GLTriangleBatch ObjLoader::getBatch(std::string fname)
     {
         std::string propType;
         ifs>>propType;
+	std::cout << propType << std::endl;
         if (propType=="v")
         {
             float c1,c2,c3;
@@ -54,7 +55,9 @@ const GLTriangleBatch ObjLoader::getBatch(std::string fname)
         else if (propType=="f")
         {
             int i1,i2,i3,t1,t2,t3;
-            ifs>>i1>>t1>>i2>>t2>>i3>>t3;
+	    char c;
+            ifs>>i1>>c>>t1>>i2>>c>>t2>>i3>>c>>t3;
+		std::cout << i1 << " " << t1 << " " << i2 << " " << t2 << " " << i3 << " " << t3 << std::endl;
             faces.push_back(Face(i1,t1,i2,t2,i3,t3));
         }
         else
@@ -64,7 +67,7 @@ const GLTriangleBatch ObjLoader::getBatch(std::string fname)
         //std::cout<<ifs.good()<<ifs.bad()<<ifs.fail()<<ifs.eof()<<std::endl;
     }
     
-    batch.BeginMesh(3*3*faces.size());
+    batch->BeginMesh(3*3*faces.size());
     for (int i=0; i<faces.size(); i++)
     {
     
@@ -102,10 +105,10 @@ const GLTriangleBatch ObjLoader::getBatch(std::string fname)
 		tex[2][0] = textureCoordinates[faces[i].t3-1].a;
 		tex[2][1] = textureCoordinates[faces[i].t3-1].b;
         
-		batch.AddTriangle(verts, norms, tex);
+		batch->AddTriangle(verts, norms, tex);
         
     }
-	batch.End();
+	batch->End();
     
     return batch;
 
