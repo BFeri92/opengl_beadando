@@ -2,7 +2,7 @@
 #include "Coordinate.h"
 #include "PositionData.h"
 #include <math.h>
-
+#include <iostream>
 #define PI 3.1415926535
 
 void Track::addControlPoint(Coordinate xy){
@@ -248,12 +248,12 @@ GLBatch* Track::getControlPointBatch(){
 
     GLBatch* pointBatch = new GLBatch();
 
-    pointBatch->Begin(GL_POINTS,2*controlPoints.size(),1);
+    pointBatch->Begin(GL_POINTS,controlPoints.size(),1);
 
         for(GLint i=0;i<controlPoints.size();i++){
             pointBatch->Normal3f(0.0f, 1.0f, 0.0f);
             pointBatch->MultiTexCoord2f(0, 1.0f, 1.0f);
-            pointBatch->Vertex3f(controlPoints[i].x, controlPoints[i].y, 0);
+            pointBatch->Vertex3f(controlPoints[i].x, 0, controlPoints[i].y);
         }
     pointBatch->End();
 
@@ -284,6 +284,7 @@ PositionData Track::getCarPosition(GLdouble t,GLdouble r ){
         _alfa= derBeta.x * way.x + derBeta.y * way.y;
 
         pData.alfa=acos (_alfa);
+        std::cout<<":"<<pData.alfa<<std::endl;
 
 return pData;
 }
