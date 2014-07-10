@@ -1,8 +1,9 @@
+
 #include "TrackBatch.h"
 #include "Game.h"
 #include <iostream>
 #include <GLTools.h>
-TrackBatch::TrackBatch(Track _track)
+TrackBatch::TrackBatch(Track& _track)
 {
 	trackBatch = _track.getBatch();
 	/*
@@ -12,12 +13,18 @@ TrackBatch::TrackBatch(Track _track)
 
 void TrackBatch::paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMatrix)
 {
-	
+	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 	static const GLfloat vGreen[] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	M3DMatrix44f mvpMatrix;
 	m3dMatrixMultiply44(mvpMatrix, projectionMatrix, viewMatrix);
 	Game::getInstance().getShaderManager().UseStockShader(GLT_SHADER_FLAT, mvpMatrix, vGreen);
 	//shaderManager.UseStockShader(GLT_SHADER_IDENTITY, vGreen);
 	trackBatch->Draw();
+	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+}
+
+void TrackBatch::update(Track& _track)
+{
+	trackBatch = _track.getBatch();
 }
 

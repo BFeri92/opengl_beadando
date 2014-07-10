@@ -35,9 +35,9 @@ void StateTwoEventHandler::keyUpEvent(char key)
 
 void StateTwoEventHandler::activeMouseMotionEvent(int x, int y) 
 {
-	std::cout<<(lastMousePos.y-y)/100.0<<" "<<(lastMousePos.x-x)/100.0<<std::endl;
-	Game::getInstance().moveCameraFwd((lastMousePos.y-y)/100.0);
-	Game::getInstance().moveCameraRight((lastMousePos.x-x)/100.0);
+	//std::cout<<(lastMousePos.y-y)/10.0<<" "<<(lastMousePos.x-x)/10.0<<std::endl;
+	Game::getInstance().moveCameraFwd((lastMousePos.y-y)/10.0);
+	Game::getInstance().moveCameraRight((lastMousePos.x-x)/10.0);
 	lastMousePos = Coordinate(x,y);
 	
 }

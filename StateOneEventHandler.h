@@ -2,12 +2,15 @@
 #define STATEONEEVENTHANDLER_H_INCLUDED
 
 #include "EventHandler.h"
+#include "Track.h"
 
 class StateOneEventHandler : public EventHandler{
 	private:
-
+		int selectedPoint;
+		Track& track;
+		bool acceptNewPoints;
 	public:
-		StateOneEventHandler();
+		StateOneEventHandler(Track& _track);
 		virtual void keyDownEvent(char key);
 		virtual void keyUpEvent(char key);
 		virtual void activeMouseMotionEvent(int x, int y);

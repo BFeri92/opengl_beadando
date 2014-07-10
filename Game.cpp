@@ -8,10 +8,8 @@
 #include "EventHandler.h"
 #include "StateOneEventHandler.h"
 #include "StateTwoEventHandler.h"
-#include "Track_d.h"
-#include "TrackBatch.h"
 #include <iostream>
-#include <glut.h>
+#include <GL/glut.h>
 #include <GLTriangleBatch.h>
 
 Game* Game::instance = 0;
@@ -22,22 +20,8 @@ Game::Game() : eventHandler(new EventHandler)
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f );
     //glEnable(GL_CULL_FACE);
-//	initStateTwo();
-	camera.MoveForward(-10);
-	GLFrustum viewFrustum;
-    viewFrustum.SetPerspective(35.0f, 800.0/600.0, .005f, 5000.0f);
-    projectionMatrix.LoadMatrix(viewFrustum.GetProjectionMatrix());
-	ObjLoader loader;
-    MeshTest* asd=new MeshTest(loader.getBatch("car.obj"));
-	objectsToDraw.push_back(asd);
-	Car* car1=new Car(0,0);
-	Car* car2=new Car(0,0);
-	/*
-	objectsToDraw.push_back(car1);
-	objectsToDraw.push_back(car2);*/
+	initStateOne();
 	
-	eventHandler = new StateTwoEventHandler(*car1,*car2);
-
 }
 
 Game::~Game()
@@ -50,6 +34,13 @@ Game::~Game()
 	{
 		delete *i;
 	}
+} 
+
+void Game::updateTrackBatches()
+{
+    trackBatch->update(track);
+    trackPointsBatch->update(track);
+    glutPostRedisplay();
 }
 
 Game& Game::getInstance()
@@ -62,27 +53,48 @@ Game& Game::getInstance()
 
 void Game::initStateOne()
 {
-	projectionMatrix.LoadIdentity();
+    for (std::vector<Drawable*>::iterator i = objectsToDraw.begin(); i!=objectsToDraw.end(); i++)
+    {
+		delete *i;
+	}
+	objectsToDraw.clear();
+	GLFrustum viewFrustum;
+    viewFrustum.SetOrthographic(0, winWidth, 0, winHeight, 1, -1);
+    
+    M3DMatrix44f transpose = {	1, 0, 0, 0,
+								0, 0, 1, 0, 
+								0, 1, 0, 0, 
+								0, 0, 0, 1};
+								
+    projectionMatrix.LoadMatrix(viewFrustum.GetProjectionMatrix());
+    projectionMatrix.MultMatrix(transpose);
+    trackBatch = new TrackBatch(track);
+    trackPointsBatch = new TrackPointsBatch(track);
+	objectsToDraw.push_back(trackBatch);
+	objectsToDraw.push_back(trackPointsBatch);
 	delete eventHandler;
-	eventHandler = new StateOneEventHandler();
+	eventHandler = new StateOneEventHandler(track);
 }
 
 void Game::initStateTwo()
 {
-	camera.MoveForward(-10);
+    for (std::vector<Drawable*>::iterator i = objectsToDraw.begin(); i!=objectsToDraw.end(); i++)
+    {
+		delete *i;
+	}
+	objectsToDraw.clear();
+	
+	camera.MoveForward(-500);
+	camera.MoveUp(100);
 	GLFrustum viewFrustum;
-    viewFrustum.SetPerspective(35.0f, 800.0/600.0, .005f, 5000.0f);
+    viewFrustum.SetPerspective(35.0f, float(winWidth)/float(winHeight), .005f, 5000.0f);
     projectionMatrix.LoadMatrix(viewFrustum.GetProjectionMatrix());
 	delete eventHandler;
-	
-	GLTriangleBatch* sphere = new GLTriangleBatch();
-	gltMakeSphere(*sphere, 1.0f, 52, 26);
-	GLTriangleBatch* sphere2 = new GLTriangleBatch();
-	gltMakeSphere(*sphere2, 10.0f, 52, 26);
+	ObjLoader loader;
 	TrackBatch* tb = new TrackBatch(track);
 	objectsToDraw.push_back(tb);
-	Car* car1=new Car(sphere,0,track);
-	Car* car2=new Car(sphere2,0,track);
+	Car* car1=new Car(loader.getBatch("car.obj"),0,track);
+	Car* car2=new Car(loader.getBatch("car.obj"),0,track);
 	cars.push_back(car1);
 	cars.push_back(car2);
 	objectsToDraw.push_back(car1);

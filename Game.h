@@ -8,6 +8,9 @@
 #include "EventHandler.h"
 #include "Drawable.h"
 #include "Car.h"
+#include "Track.h"
+#include "TrackBatch.h"
+#include "TrackPointsBatch.h"
 
 class Game{
 	private:
@@ -15,14 +18,19 @@ class Game{
 		EventHandler* eventHandler;
 		std::vector<Car*> cars;
 		std::vector<Drawable*> objectsToDraw;
+		TrackBatch* trackBatch;
+		TrackPointsBatch* trackPointsBatch;
 		static Game* instance;
 		GLFrame camera;
 		GLMatrixStack projectionMatrix;
-		Game();
+		Game(); 
 		~Game();
 		Track track;
 	public:
+		static const int winWidth=800;
+		static const int winHeight=600;
 		static Game& getInstance();
+		void updateTrackBatches();
 		void initStateOne();
 		void initStateTwo();
 		void render();

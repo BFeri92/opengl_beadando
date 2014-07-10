@@ -40,7 +40,6 @@ void Car::step()
 
 void Car::setSpeedChange(int _speedChange)
 {
-	std::cout<<"spd"<<_speedChange<<std::endl;
 	speedChange=_speedChange;
 }
 
