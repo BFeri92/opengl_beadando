@@ -13,11 +13,18 @@ TrackBatch::TrackBatch(Track& _track)
 
 void TrackBatch::paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMatrix)
 {
-	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-	static const GLfloat vGreen[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+	static const GLfloat vWhite[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat vLightPos[] = { 100.0f, 100.0f, 1000.0f, 1.0f };
+	M3DVector4f	vLightTransformed;
+	m3dTransformVector4(vLightTransformed, vLightPos, viewMatrix);
 	M3DMatrix44f mvpMatrix;
 	m3dMatrixMultiply44(mvpMatrix, projectionMatrix, viewMatrix);
-	Game::getInstance().getShaderManager().UseStockShader(GLT_SHADER_FLAT, mvpMatrix, vGreen);
+	Game::getInstance().getShaderManager().UseStockShader(GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF,
+                                         viewMatrix,
+                                         projectionMatrix,
+                                         vLightTransformed,
+                                         vWhite,
+                                         0);
 	//shaderManager.UseStockShader(GLT_SHADER_IDENTITY, vGreen);
 	trackBatch->Draw();
 	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
@@ -25,6 +32,7 @@ void TrackBatch::paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& proje
 
 void TrackBatch::update(Track& _track)
 {
+	delete trackBatch;
 	trackBatch = _track.getBatch();
 }
 

@@ -87,7 +87,7 @@ GLTriangleBatch* ObjLoader::getBatch(std::string fname)
         
         M3DVector3f norms[3];
 		
-		m3dFindNormal(norms[0], verts[0], verts[1], verts[2]);
+		m3dFindNormal(norms[0], verts[2], verts[1], verts[0]);
 		norms[2][0]=norms[1][0]=norms[0][0];
 		norms[2][1]=norms[1][1]=norms[0][1];
 		norms[2][2]=norms[1][2]=norms[0][2];

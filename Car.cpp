@@ -1,9 +1,9 @@
 #include "Car.h"
 #include <iostream>
 #include "Game.h"
-Car::Car(GLTriangleBatch* _batch, double _horizPosOnTrack, Track& _track) :
+Car::Car(GLTriangleBatch* _batch, double _horizPosOnTrack, Track& _track, int _textureID) :
 	horizPosOnTrack(_horizPosOnTrack), speedChange(0),
-	speed(0), positionOnTrack(0), track(_track)
+	speed(0), positionOnTrack(0), track(_track), textureID(_textureID)
 {
 	batch = _batch;
 	//gltMakeSphere(batch, _horizPosOnTrack, 52, 26);
@@ -11,18 +11,24 @@ Car::Car(GLTriangleBatch* _batch, double _horizPosOnTrack, Track& _track) :
 
 void Car::paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMatrix)
 {
-	glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-	static const GLfloat vGreen[] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	static const GLfloat vWhite[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat vLightPos[] = { 100.0f, 100.0f, 1000.0f, 1.0f };
+	M3DVector4f	vLightTransformed;
+	m3dTransformVector4(vLightTransformed, vLightPos, viewMatrix);
 	M3DMatrix44f vpMatrix;
 	m3dMatrixMultiply44(vpMatrix, projectionMatrix, viewMatrix);
-	M3DMatrix44f mvpMatrix;
+	M3DMatrix44f mvMatrix;
 	M3DMatrix44f mMatrix;
 	pos.getTransformationMatrix(mMatrix);
-	m3dMatrixMultiply44(mvpMatrix, vpMatrix, mMatrix);
-	Game::getInstance().getShaderManager().UseStockShader(GLT_SHADER_FLAT, mvpMatrix, vGreen);
+	m3dMatrixMultiply44(mvMatrix, viewMatrix, mMatrix);
+		Game::getInstance().getShaderManager().UseStockShader(GLT_SHADER_TEXTURE_POINT_LIGHT_DIFF,
+                                         mvMatrix,
+                                         projectionMatrix,
+                                         vLightTransformed,
+                                         vWhite,
+                                         textureID);
 	//shaderManager.UseStockShader(GLT_SHADER_IDENTITY, vGreen);
 	batch->Draw();
-	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 }
 
 void Car::step()

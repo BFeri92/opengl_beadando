@@ -20,8 +20,22 @@ Game::Game() : eventHandler(new EventHandler)
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f );
     //glEnable(GL_CULL_FACE);
+    
+    glGenTextures(3, textures);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textures[0]);
+    LoadTGATexture("asph.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
+    
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, textures[1]);
+    LoadTGATexture("car.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, textures[2]);
+    LoadTGATexture("car2.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
+
+
 	initStateOne();
-	
 }
 
 Game::~Game()
@@ -33,7 +47,8 @@ Game::~Game()
 	for (std::vector<Drawable*>::iterator i = objectsToDraw.begin(); i!=objectsToDraw.end(); i++)
 	{
 		delete *i;
-	}
+	}	
+    glDeleteTextures(3, textures);
 } 
 
 void Game::updateTrackBatches()
@@ -85,7 +100,7 @@ void Game::initStateTwo()
 	objectsToDraw.clear();
 	
 	camera.MoveForward(-500);
-	camera.MoveUp(100);
+	camera.MoveUp(20);
 	GLFrustum viewFrustum;
     viewFrustum.SetPerspective(35.0f, float(winWidth)/float(winHeight), .005f, 5000.0f);
     projectionMatrix.LoadMatrix(viewFrustum.GetProjectionMatrix());
@@ -93,8 +108,8 @@ void Game::initStateTwo()
 	ObjLoader loader;
 	TrackBatch* tb = new TrackBatch(track);
 	objectsToDraw.push_back(tb);
-	Car* car1=new Car(loader.getBatch("car.obj"),0,track);
-	Car* car2=new Car(loader.getBatch("car.obj"),0,track);
+	Car* car1=new Car(loader.getBatch("car.obj"),-10,track, 1);
+	Car* car2=new Car(loader.getBatch("car2.obj"),10,track, 2);
 	cars.push_back(car1);
 	cars.push_back(car2);
 	objectsToDraw.push_back(car1);
@@ -164,4 +179,36 @@ void Game::followCar(int id)
 GLShaderManager& Game::getShaderManager()
 {
 	return shaderManager;
+}
+
+bool Game::LoadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode)
+{
+	GLbyte *pBits;
+	int nWidth, nHeight, nComponents;
+	GLenum eFormat;
+	
+	// Read the texture bits
+	pBits = gltReadTGABits(szFileName, &nWidth, &nHeight, &nComponents, &eFormat);
+	if(pBits == NULL) 
+		return false;
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
+    
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, nComponents, nWidth, nHeight, 0,
+				 eFormat, GL_UNSIGNED_BYTE, pBits);
+	
+    free(pBits);
+    
+    if(minFilter == GL_LINEAR_MIPMAP_LINEAR || 
+       minFilter == GL_LINEAR_MIPMAP_NEAREST ||
+       minFilter == GL_NEAREST_MIPMAP_LINEAR ||
+       minFilter == GL_NEAREST_MIPMAP_NEAREST)
+        glGenerateMipmap(GL_TEXTURE_2D);
+    
+	return true;
 }

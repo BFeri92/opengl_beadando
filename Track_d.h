@@ -72,7 +72,7 @@ public:
 
     PositionData getCarPosition(GLdouble t,GLdouble r )
     {
-	
+		return PositionData(0,t*10,0);
 	}
 
     void finalPoint()

@@ -275,18 +275,13 @@ PositionData Track::getCarPosition(GLdouble t,GLdouble r ){
     P1.y+=Pd1.x;
     pData.x=P1.x;
     pData.y=P1.y;
-        derBeta=derivalt(t,1);
-
-        if(derBeta.x<0)
-            way=Coordinate(0,1);
-        else{
-            way=Coordinate(0,-1);
-            pData.alfa=PI;
-        }
-        _alfa= derBeta.x * way.x + derBeta.y * way.y;
-
-        pData.alfa+=acos (_alfa);
-        //std::cout<<":"<<pData.alfa<<std::endl;
+    derBeta=derivalt(t,1);
+    _alfa= derBeta.x * way.x + derBeta.y * way.y;
+    pData.alfa+=acos (_alfa);
+    Coordinate a(0,1);
+    Coordinate b(0.5547, -0.83205);
+    //std::cout<<acos(a.x * b.x + a.y * b.y)*57.2957795<<std::endl;
+    std::cout<<":"<<_alfa<<';'<<pData.alfa*57.2957795<<std::endl;
 
 return pData;
 }
