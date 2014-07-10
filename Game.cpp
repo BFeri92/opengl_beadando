@@ -79,16 +79,14 @@ void Game::initStateTwo()
 	gltMakeSphere(*sphere, 1.0f, 52, 26);
 	GLTriangleBatch* sphere2 = new GLTriangleBatch();
 	gltMakeSphere(*sphere2, 10.0f, 52, 26);
-	Track t;
-	TrackBatch* tb = new TrackBatch(t);
+	TrackBatch* tb = new TrackBatch(track);
 	objectsToDraw.push_back(tb);
-	Car* car1=new Car(sphere,0);
-	Car* car2=new Car(sphere2,0);
+	Car* car1=new Car(sphere,0,track);
+	Car* car2=new Car(sphere2,0,track);
 	cars.push_back(car1);
 	cars.push_back(car2);
-	/*
 	objectsToDraw.push_back(car1);
-	objectsToDraw.push_back(car2);*/
+	objectsToDraw.push_back(car2);
 	
 	eventHandler = new StateTwoEventHandler(*car1,*car2);
 }

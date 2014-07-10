@@ -2,15 +2,17 @@
 #define POSITIONDATA_H_INCLUDED
 
 #include <GLTools.h>
+#include <math3d.h>
 
 struct PositionData{
-GLint x;
-GLint y;
+GLdouble x;
+GLdouble y;
 GLdouble alfa;
 
     PositionData();
 
-    PositionData(GLint _x,GLint _y,GLdouble _alfa);
+    PositionData(GLdouble _x,GLdouble _y,GLdouble _alfa);
+    void getTransformationMatrix(M3DMatrix44f& res);
 };
 
 #endif // POSITIONDATA_H_INCLUDED

@@ -20,6 +20,7 @@ class Game{
 		GLMatrixStack projectionMatrix;
 		Game();
 		~Game();
+		Track track;
 	public:
 		static Game& getInstance();
 		void initStateOne();
