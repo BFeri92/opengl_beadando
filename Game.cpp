@@ -6,26 +6,24 @@
 #include "MeshTest.h"
 #include "ObjLoader.h"
 #include "EventHandler.h"
+#include "StateOneEventHandler.h"
 #include "StateTwoEventHandler.h"
+#include "Track_d.h"
+#include "TrackBatch.h"
 #include <iostream>
 #include <glut.h>
 #include <GLTriangleBatch.h>
 
 Game* Game::instance = 0;
 
-Game::Game() : eventHandler(0)
+Game::Game() : eventHandler(new EventHandler)
 {
+	shaderManager.InitializeStockShaders();
     glEnable(GL_DEPTH_TEST);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f );
     //glEnable(GL_CULL_FACE);
-	GLFrustum viewFrustum;
-    viewFrustum.SetPerspective(35.0f, 800.0/600.0, .005f, 5000.0f);
-	//viewFrustum.SetOrthographic(-10, 10,-10 , 10, -10, 10);
-	eventHandler = new StateTwoEventHandler();
-    projectionMatrix.LoadMatrix(viewFrustum.GetProjectionMatrix());
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f );
-	ObjLoader loader;
-	objectsToDraw.push_back(new MeshTest(loader.getBatch("cube.obj")));
-	camera.MoveForward(-10);
+	initStateTwo();
+	
 }
 
 Game::~Game()
@@ -50,15 +48,39 @@ Game& Game::getInstance()
 
 void Game::initStateOne()
 {
+	projectionMatrix.LoadIdentity();
+	delete eventHandler;
+	eventHandler = new StateOneEventHandler();
 }
 
 void Game::initStateTwo()
 {
+	camera.MoveForward(-10);
+	GLFrustum viewFrustum;
+    viewFrustum.SetPerspective(35.0f, 800.0/600.0, .005f, 5000.0f);
+    projectionMatrix.LoadMatrix(viewFrustum.GetProjectionMatrix());
+	delete eventHandler;
+	
+	GLTriangleBatch* sphere = new GLTriangleBatch();
+	gltMakeSphere(*sphere, 1.0f, 52, 26);
+	GLTriangleBatch* sphere2 = new GLTriangleBatch();
+	gltMakeSphere(*sphere2, 10.0f, 52, 26);
+	Track t;
+	TrackBatch* tb = new TrackBatch(t);
+	objectsToDraw.push_back(tb);
+	Car* car1=new Car(sphere,0);
+	Car* car2=new Car(sphere2,0);
+	cars.push_back(car1);
+	cars.push_back(car2);
+	/*
+	objectsToDraw.push_back(car1);
+	objectsToDraw.push_back(car2);*/
+	
+	eventHandler = new StateTwoEventHandler(*car1,*car2);
 }
 
 void Game::render()
 {
-	std::cout<<"render"<<std::endl;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GLMatrixStack viewMatrix;
     M3DMatrix44f mCamera;
@@ -79,7 +101,11 @@ void Game::render()
 		(*i)->paint(viewMatrix.GetMatrix(), projectionMatrix.GetMatrix());
 	}
     glutSwapBuffers();
-    //glutPostRedisplay();
+        for (std::vector<Car*>::iterator i = cars.begin(); i!=cars.end(); i++)
+    {
+		(*i)->step();
+	}
+    glutPostRedisplay();
 }
 
 EventHandler& Game::getEventHandler()
@@ -109,4 +135,9 @@ void Game::moveCameraLeft(float amount)
 
 void Game::followCar(int id)
 {
+}
+
+GLShaderManager& Game::getShaderManager()
+{
+	return shaderManager;
 }

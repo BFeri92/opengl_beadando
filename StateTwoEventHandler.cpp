@@ -2,18 +2,35 @@
 #include "Game.h"
 #include <iostream>
 
-StateTwoEventHandler::StateTwoEventHandler()
+StateTwoEventHandler::StateTwoEventHandler(Car& _car1, Car& _car2) : car1(_car1), car2(_car2)
 {
 }
 
 void StateTwoEventHandler::keyDownEvent(char key) 
 {
+	std::cout<<"down: "<<key<<std::endl;
+	keyStates[key]=true;
+	if (keyStates['q']) car1.setSpeedChange(Car::FASTER); else
+	if (keyStates['a']) car1.setSpeedChange(Car::SLOWER); else
+	car1.setSpeedChange(Car::KEEP_SPEED);
 	
+	if (keyStates['o']) car2.setSpeedChange(Car::FASTER); else
+	if (keyStates['k']) car2.setSpeedChange(Car::SLOWER); else
+	car2.setSpeedChange(Car::KEEP_SPEED);
+
 }
 
 void StateTwoEventHandler::keyUpEvent(char key) 
 {
+	std::cout<<"up: "<<key<<std::endl;
+	keyStates[key]=false;
+	if (keyStates['q']) car1.setSpeedChange(Car::FASTER); else
+	if (keyStates['a']) car1.setSpeedChange(Car::SLOWER); else
+	car1.setSpeedChange(Car::KEEP_SPEED);
 	
+	if (keyStates['o']) car2.setSpeedChange(Car::FASTER); else
+	if (keyStates['k']) car2.setSpeedChange(Car::SLOWER); else
+	car2.setSpeedChange(Car::KEEP_SPEED);
 }
 
 void StateTwoEventHandler::activeMouseMotionEvent(int x, int y) 

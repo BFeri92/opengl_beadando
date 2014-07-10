@@ -27,9 +27,31 @@ void ChangeSize(int w, int h)
 {
 }
 
+void onClick(int button, int state, int x, int y)
+{
+	if (state==GLUT_DOWN)
+	{
+		Game::getInstance().getEventHandler().mouseDownEvent(button,x,y);
+	} else if (state==GLUT_UP)
+	{
+		Game::getInstance().getEventHandler().mouseUpEvent(button,x,y);
+	}
+}
+
+void onMouseMove(int x, int y)
+{
+	Game::getInstance().getEventHandler().activeMouseMotionEvent(x,y);
+	glutPostRedisplay();
+}
+
 void KeyPressFunc(unsigned char key, int x, int y)
 {
 	Game::getInstance().getEventHandler().keyDownEvent(key);
+}
+
+void onKeyUp(unsigned char key, int x, int y)
+{
+	Game::getInstance().getEventHandler().keyUpEvent(key);
 }
 
 int main(int argc, char* argv[])
@@ -42,7 +64,9 @@ int main(int argc, char* argv[])
     glutReshapeFunc(ChangeSize);
     glutDisplayFunc(RenderScene);
     glutKeyboardFunc(KeyPressFunc);
-
+    glutKeyboardUpFunc(onKeyUp);
+	glutMotionFunc(onMouseMove);
+	glutMouseFunc(onClick);
     GLenum err = glewInit();
     if (GLEW_OK != err) {
         fprintf(stderr, "GLEW Error: %s\n", glewGetErrorString(err));

@@ -7,10 +7,13 @@
 
 #include "EventHandler.h"
 #include "Drawable.h"
+#include "Car.h"
 
 class Game{
 	private:
+		GLShaderManager shaderManager;
 		EventHandler* eventHandler;
+		std::vector<Car*> cars;
 		std::vector<Drawable*> objectsToDraw;
 		static Game* instance;
 		GLFrame camera;
@@ -28,5 +31,6 @@ class Game{
 		void moveCameraRight(float amount);
 		void moveCameraLeft(float amount);
 		void followCar(int id);
+		GLShaderManager& getShaderManager();
 };
 #endif
