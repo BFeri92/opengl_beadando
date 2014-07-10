@@ -4,7 +4,9 @@
 #ifdef __APPLE__
 #include <glut/glut.h>
 #else
+#ifndef __WIN32__
 #define FREEGLUT_STATIC
+#endif
 #include <GL/glut.h>
 #endif
 
