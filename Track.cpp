@@ -150,6 +150,7 @@ Coordinate P;
 return P;
 }
 //------------------------------------------------
+
 GLTriangleBatch* Track::getBatch(){
     GLTriangleBatch* _track = new GLTriangleBatch();
 
@@ -201,24 +202,24 @@ GLTriangleBatch* Track::getBatch(){
             vVertex[2][2]=P22.y;
 
             vNormal[0][0]=0.0f;
-            vNormal[0][1]=1.0f;
-            vNormal[0][2]=0.0f;
+            vNormal[0][1]=0.0f;
+            vNormal[0][2]=1.0f;
 
             vNormal[1][0]=0.0;
-            vNormal[1][1]=1.0f;
-            vNormal[1][2]=0.0f;
+            vNormal[1][1]=0.0f;
+            vNormal[1][2]=1.0f;
 
             vNormal[2][0]=0.0f;
-            vNormal[2][1]=1.0f;
-            vNormal[2][2]=0.0f;
+            vNormal[2][1]=0.0f;
+            vNormal[2][2]=1.0f;
 
             vTexture[0][0]=0.0f;
-            vTexture[0][1]=1.0f;
+            vTexture[0][1]=0.0f;
 
-            vTexture[1][0]=0.0;
+            vTexture[1][0]=0.0f;
             vTexture[1][1]=1.0f;
 
-            vTexture[2][0]=0.0f;
+            vTexture[2][0]=1.0f;
             vTexture[2][1]=1.0f;
 
             _track->AddTriangle(vVertex,vNormal,vTexture)  ;
@@ -264,27 +265,28 @@ PositionData Track::getCarPosition(GLdouble t,GLdouble r ){
     pData.x=0;
     pData.y=0;
     pData.alfa=0;
-
-    Coordinate derP;
-    Coordinate bezP;
-
     Coordinate way=Coordinate(0,1);
     Coordinate derBeta;
     GLdouble _alfa;
+	Coordinate P1,P2, Pd1,Pd2;
+    Pd1=derivalt(t,r);
+    P1=bezier(t);
+    P1.x+=-1.0*Pd1.y;
+    P1.y+=Pd1.x;
+    pData.x=P1.x;
+    pData.y=P1.y;
 
+/*
         derP=derivalt(t,r);
         bezP=bezier(t);
-        pData.x=bezP.x-derP.x;
-        pData.y=bezP.y-derP.y;
-
-
+        pData.x=bezP.x-derP.y;
+        pData.y=bezP.y-derP.x;*/
         derBeta=derivalt(t,1);
-
+		//std::cout<<derP.x<<";;"<<derP.y<<std::endl;
 
         _alfa= derBeta.x * way.x + derBeta.y * way.y;
 
         pData.alfa=acos (_alfa);
-        std::cout<<":"<<pData.alfa<<std::endl;
 
 return pData;
 }
