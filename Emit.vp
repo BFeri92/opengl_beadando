@@ -1,0 +1,26 @@
+// ADS Point lighting Shader
+// Vertex Shader
+// Richard S. Wright Jr.
+// OpenGL SuperBible
+#version 130
+
+// Incoming per vertex... position and normal
+in vec4 vVertex;
+in vec3 vNormal;
+in vec4 vTexture0;
+
+uniform mat4   mvpMatrix;
+uniform mat4   mvMatrix;
+
+
+// Color to fragment program
+smooth out vec2 vTexCoords;
+
+void main(void) 
+    { 
+    // Pass along the texture coordinates
+    vTexCoords = vTexture0.st;
+
+    // Don't forget to transform the geometry!
+    gl_Position = mvpMatrix * vVertex;
+    }

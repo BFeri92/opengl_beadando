@@ -27,7 +27,7 @@ class Game{
 		Game(); 
 		~Game();
 		Track track;
-		GLuint textures[4];
+		GLuint textures[5];
 		bool LoadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
 	public:
 		static const int winWidth=800;

@@ -5,6 +5,7 @@
 #include "Sphere.h"
 #include "MeshTest.h"
 #include "ObjLoader.h"
+#include "Sky.h"
 #include "EventHandler.h"
 #include "StateOneEventHandler.h"
 #include "StateTwoEventHandler.h"
@@ -19,9 +20,8 @@ Game::Game() : eventHandler(new EventHandler)
 	shaderManager.InitializeStockShaders();
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f );
-    //glEnable(GL_CULL_FACE);
     
-    glGenTextures(4, textures);
+    glGenTextures(5, textures);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures[0]);
     LoadTGATexture("asph.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
@@ -34,9 +34,13 @@ Game::Game() : eventHandler(new EventHandler)
     glBindTexture(GL_TEXTURE_2D, textures[2]);
     LoadTGATexture("car2.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 
-    glActiveTexture(GL_TEXTURE2);
+    glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, textures[3]);
     LoadTGATexture("grass.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
+
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, textures[4]);
+    LoadTGATexture("sky.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 
 
 	initStateOne();
@@ -52,7 +56,7 @@ Game::~Game()
 	{
 		delete *i;
 	}	
-    glDeleteTextures(3, textures);
+    glDeleteTextures(5, textures);
 } 
 
 void Game::updateTrackBatches()
@@ -72,6 +76,7 @@ Game& Game::getInstance()
 
 void Game::initStateOne()
 {
+	glDisable(GL_CULL_FACE);
     for (std::vector<Drawable*>::iterator i = objectsToDraw.begin(); i!=objectsToDraw.end(); i++)
     {
 		delete *i;
@@ -97,6 +102,7 @@ void Game::initStateOne()
 
 void Game::initStateTwo()
 {
+	//glEnable(GL_CULL_FACE);
     for (std::vector<Drawable*>::iterator i = objectsToDraw.begin(); i!=objectsToDraw.end(); i++)
     {
 		delete *i;
@@ -122,6 +128,7 @@ void Game::initStateTwo()
     
 	Grass* grass=new Grass(3);
 	objectsToDraw.push_back(grass);
+	objectsToDraw.push_back(new Sky(4));
 	
 	eventHandler = new StateTwoEventHandler(*car1,*car2);
 }

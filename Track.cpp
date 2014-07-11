@@ -205,13 +205,13 @@ GLTriangleBatch* Track::getBatch()
         P22.x+=-1.0*Pd22.y;
         P22.y+=Pd22.x;
 
-        vVertex[0][0]=P1.x;
+        vVertex[0][0]=P2.x;
         vVertex[0][1]=0;
-        vVertex[0][2]=P1.y;
+        vVertex[0][2]=P2.y;
 
-        vVertex[1][0]=P2.x;
+        vVertex[1][0]=P1.x;
         vVertex[1][1]=0;
-        vVertex[1][2]=P2.y;
+        vVertex[1][2]=P1.y;
 
         vVertex[2][0]=P22.x;
         vVertex[2][1]=0;
@@ -221,7 +221,7 @@ GLTriangleBatch* Track::getBatch()
         vNormal[0][1]=0.0f;
         vNormal[0][2]=1.0f;
 
-        vNormal[1][0]=0.0;
+        vNormal[1][0]=0.0f;
         vNormal[1][1]=0.0f;
         vNormal[1][2]=1.0f;
 
@@ -240,17 +240,18 @@ GLTriangleBatch* Track::getBatch()
 
         _track->AddTriangle(vVertex,vNormal,vTexture)  ;
 
-        vVertex[0][0]=P1.x;
+        vVertex[0][0]=P22.x;
         vVertex[0][1]=0;
-        vVertex[0][2]=P1.y;
+        vVertex[0][2]=P22.y;
 
-        vVertex[1][0]=P11.x;
+        vVertex[1][0]=P1.x;
         vVertex[1][1]=0;
-        vVertex[1][2]=P11.y;
+        vVertex[1][2]=P1.y;
 
-        vVertex[2][0]=P22.x;
+        vVertex[2][0]=P11.x;
         vVertex[2][1]=0;
-        vVertex[2][2]=P22.y;
+        vVertex[2][2]=P11.y;
+
 
         _track->AddTriangle(vVertex,vNormal,vTexture)  ;
 
