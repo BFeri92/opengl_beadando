@@ -4,7 +4,8 @@
 class Grass : public Drawable
 {
 	private:
-		static const double height = -0.1;
+		static const double height = -1.0;
+		static const double width = 10000.0;
 		int textureID;
 		GLTriangleBatch* batch;
 	public:
