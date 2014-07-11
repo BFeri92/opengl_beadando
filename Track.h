@@ -13,6 +13,10 @@ private:
     Coordinate   derivalt(GLdouble t,GLdouble R);
 
     Coordinate bezier(GLdouble t);
+    
+    bool finalPointSet;
+    
+    void setAfterFinalControlPointAtIndex(int index,Coordinate xy);
 
 public:
     void addControlPoint(Coordinate xy);
@@ -28,8 +32,6 @@ public:
     void finalPoint();
 
     GLBatch* getControlPointBatch();
-
-    void setAfterFinalControlPointAtIndex(int index,Coordinate xy);
 
 
 };
