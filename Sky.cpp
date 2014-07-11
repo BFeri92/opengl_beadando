@@ -1,7 +1,7 @@
 #include "Sky.h"
 Sky::Sky(int _textureID):textureID(_textureID)
 {
-	gltMakeSphere(batch, 1000.0f, 52, 26);
+	gltMakeSphere(batch, 3000.0f, 52, 26);
 	shader = gltLoadShaderPairWithAttributes("Emit.vp", "Emit.fp", 3, GLT_ATTRIBUTE_VERTEX, "vVertex",
                  GLT_ATTRIBUTE_NORMAL, "vNormal", GLT_ATTRIBUTE_TEXTURE0, "vTexture0");
     
@@ -23,7 +23,7 @@ void Sky::paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMa
         glDisable(GL_CULL_FACE);
         glUseProgram(shader);
 		M3DMatrix44f modelMatrix;
-		m3dRotationMatrix44(modelMatrix,1.57079632679,0,0,1);
+		m3dRotationMatrix44(modelMatrix,1.57079632679,1,0,0);
 		M3DMatrix44f mvMatrix;
 		m3dMatrixMultiply44(mvMatrix, viewMatrix, modelMatrix);
 		M3DMatrix44f mvpMatrix;
@@ -34,6 +34,5 @@ void Sky::paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMa
         glUniformMatrix4fv(locMVEmit, 1, GL_FALSE, mvMatrix);
         glUniform1i(locTextureEmit, textureID);
         batch.Draw();
-        //glEnable(GL_CULL_FACE);
 }
 

@@ -12,17 +12,17 @@ Grass::Grass(int _textureID) :
     
     M3DVector3f verts[3];
     
-    verts[0][0] = -width;
+    verts[0][0] = -1*width;
     verts[0][1] = height;
-    verts[0][2] = -width;
+    verts[0][2] = -1*width;
     
-    verts[1][0] = 400.0f;
+    verts[1][0] = width;
     verts[1][1] = height;
-    verts[1][2] = -width;
+    verts[1][2] = -1*width;
     
-    verts[2][0] = 400.0f;
+    verts[2][0] = width;
     verts[2][1] = height;
-    verts[2][2] = 400.0f;
+    verts[2][2] = width;
     
     M3DVector3f norms[3];
     
@@ -45,13 +45,13 @@ Grass::Grass(int _textureID) :
     verts[0][1] = height;
     verts[0][2] = width;
     
-    verts[1][0] = -width;
+    verts[1][0] = -1*width;
     verts[1][1] = height;
     verts[1][2] = width;
     
-    verts[2][0] = -width;
+    verts[2][0] = -1*width;
     verts[2][1] = height;
-    verts[2][2] = -width;
+    verts[2][2] = -1*width;
     
     tex[0][0] = 1.0f;
     tex[0][1] = 1.0f;
