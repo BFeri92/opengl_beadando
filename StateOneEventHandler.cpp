@@ -16,7 +16,7 @@ void StateOneEventHandler::keyDownEvent(char key)
 
 void StateOneEventHandler::keyUpEvent(char key) 
 {
-	if (key=' ')
+	if (key==' ')
 	{
 		if (acceptNewPoints)
 		{
