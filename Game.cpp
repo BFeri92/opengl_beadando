@@ -42,7 +42,7 @@ Game::Game() : eventHandler(new EventHandler)
     glBindTexture(GL_TEXTURE_2D, textures[4]);
     LoadTGATexture("sky.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 
-
+	carToFollow=-1;
 	initStateOne();
 }
 
@@ -135,6 +135,15 @@ void Game::initStateTwo()
 
 void Game::render()
 {
+	if (carToFollow!=-1)
+	{
+		PositionData carPos = cars[carToFollow]->getPositionData();
+		camera.SetOrigin(carPos.x, 40, carPos.y);
+		M3DVector3f initialFwd = {0.0f, 0.0f, 1.0f};
+		camera.SetForwardVector(initialFwd);
+		camera.RotateWorld(carPos.alfa, 0.0f, 1.0f, 0.0f);
+		camera.MoveForward(-200);
+	}
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GLMatrixStack viewMatrix;
     M3DMatrix44f mCamera;
@@ -190,6 +199,7 @@ void Game::moveCameraLeft(float amount)
 
 void Game::followCar(int id)
 {
+	carToFollow=id;
 }
 
 GLShaderManager& Game::getShaderManager()

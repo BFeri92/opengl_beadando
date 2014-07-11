@@ -8,7 +8,6 @@ StateTwoEventHandler::StateTwoEventHandler(Car& _car1, Car& _car2) : car1(_car1)
 
 void StateTwoEventHandler::keyDownEvent(char key) 
 {
-	std::cout<<"down: "<<key<<std::endl;
 	keyStates[key]=true;
 	if (keyStates['q']) car1.setSpeedChange(Car::FASTER); else
 	if (keyStates['a']) car1.setSpeedChange(Car::SLOWER); else
@@ -17,12 +16,18 @@ void StateTwoEventHandler::keyDownEvent(char key)
 	if (keyStates['o']) car2.setSpeedChange(Car::FASTER); else
 	if (keyStates['k']) car2.setSpeedChange(Car::SLOWER); else
 	car2.setSpeedChange(Car::KEEP_SPEED);
+	if (key=='0')
+		Game::getInstance().followCar(-1);
+	if (key=='1')
+		Game::getInstance().followCar(0); else
+	if (key=='2')
+		Game::getInstance().followCar(1);
 
+		
 }
 
 void StateTwoEventHandler::keyUpEvent(char key) 
 {
-	std::cout<<"up: "<<key<<std::endl;
 	keyStates[key]=false;
 	if (keyStates['q']) car1.setSpeedChange(Car::FASTER); else
 	if (keyStates['a']) car1.setSpeedChange(Car::SLOWER); else

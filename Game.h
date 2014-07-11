@@ -29,6 +29,7 @@ class Game{
 		Track track;
 		GLuint textures[5];
 		bool LoadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
+		int carToFollow;
 	public:
 		static const int winWidth=800;
 		static const int winHeight=600;
