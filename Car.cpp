@@ -1,9 +1,10 @@
 #include "Car.h"
 #include <iostream>
 #include "Game.h"
-Car::Car(GLTriangleBatch* _batch, double _horizPosOnTrack, Track& _track, int _textureID) :
-	horizPosOnTrack(_horizPosOnTrack), speedChange(0),
-	speed(0), positionOnTrack(0), track(_track), textureID(_textureID)
+Car::Car(GLTriangleBatch* _batch, double _horizPosOnTrack, Track& _track, int _textureID, std::string _name) :
+	horizPosOnTrack(_horizPosOnTrack), speedChange(0), roundCounter(0),
+	speed(0), positionOnTrack(0), track(_track), textureID(_textureID),
+	name(_name)
 {
 	batch = _batch;
 	//gltMakeSphere(batch, _horizPosOnTrack, 52, 26);
@@ -42,7 +43,11 @@ void Car::step()
 	if (speed<-1*maxSpeed) speed=-1*maxSpeed;
 	positionOnTrack+=speed;
 	double integral;
-	if (positionOnTrack>1) positionOnTrack=modf(positionOnTrack, &integral); else
+	if (positionOnTrack>1) {
+            positionOnTrack=modf(positionOnTrack, &integral);
+            roundCounter++;
+            if (roundCounter>3) Game::getInstance().endGame(name);
+    } else
 	if (positionOnTrack<0) positionOnTrack=1+positionOnTrack;
 	pos = track.getCarPosition(positionOnTrack, horizPosOnTrack);
 	//std::cout<<positionOnTrack<<" "<<speed<<std::endl;

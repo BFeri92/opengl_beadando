@@ -12,6 +12,7 @@
 #include "Track.h"
 #include "TrackBatch.h"
 #include "TrackPointsBatch.h"
+#include <string>
 
 class Game{
 	private:
@@ -24,7 +25,7 @@ class Game{
 		static Game* instance;
 		GLFrame camera;
 		GLMatrixStack projectionMatrix;
-		Game(); 
+		Game();
 		~Game();
 		Track track;
 		GLuint textures[5];
@@ -45,5 +46,6 @@ class Game{
 		void moveCameraLeft(float amount);
 		void followCar(int id);
 		GLShaderManager& getShaderManager();
+		void endGame(std::string nev);
 };
 #endif

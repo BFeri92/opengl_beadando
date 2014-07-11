@@ -20,12 +20,12 @@ Game::Game() : eventHandler(new EventHandler)
 	shaderManager.InitializeStockShaders();
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f );
-    
+
     glGenTextures(5, textures);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures[0]);
     LoadTGATexture("asph.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_REPEAT);
-    
+
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, textures[1]);
     LoadTGATexture("car.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
@@ -55,9 +55,9 @@ Game::~Game()
 	for (std::vector<Drawable*>::iterator i = objectsToDraw.begin(); i!=objectsToDraw.end(); i++)
 	{
 		delete *i;
-	}	
+	}
     glDeleteTextures(5, textures);
-} 
+}
 
 void Game::updateTrackBatches()
 {
@@ -84,18 +84,18 @@ void Game::initStateOne()
 	objectsToDraw.clear();
 	GLFrustum viewFrustum;
     viewFrustum.SetOrthographic(0, winWidth, 0, winHeight, 1, -1);
-    
+
     M3DMatrix44f transpose = {	1, 0, 0, 0,
-								0, 0, 1, 0, 
-								0, 1, 0, 0, 
+								0, 0, 1, 0,
+								0, 1, 0, 0,
 								0, 0, 0, 1};
-								
+
     projectionMatrix.LoadMatrix(viewFrustum.GetProjectionMatrix());
     projectionMatrix.MultMatrix(transpose);
     trackBatch = new TrackBatch(track);
     trackPointsBatch = new TrackPointsBatch(track);
-	objectsToDraw.push_back(trackBatch);
 	objectsToDraw.push_back(trackPointsBatch);
+	objectsToDraw.push_back(trackBatch);
 	delete eventHandler;
 	eventHandler = new StateOneEventHandler(track);
 }
@@ -109,7 +109,7 @@ void Game::initStateTwo()
 	}
 	objectsToDraw.clear();
 	PositionData initialCamPos = track.getCarPosition(0,0);
-	std::cout<<initialCamPos.y<<".."<<initialCamPos.x<<std::endl;
+	//std::cout<<initialCamPos.y<<".."<<initialCamPos.x<<std::endl;
 	camera.SetOrigin(initialCamPos.x, 40, initialCamPos.y);
 	camera.MoveForward(-200);
 	GLFrustum viewFrustum;
@@ -119,17 +119,17 @@ void Game::initStateTwo()
 	ObjLoader loader;
 	TrackBatch* tb = new TrackBatch(track);
 	objectsToDraw.push_back(tb);
-	Car* car1=new Car(loader.getBatch("car.obj"),-10,track, 1);
-	Car* car2=new Car(loader.getBatch("car2.obj"),10,track, 2);
+	Car* car1=new Car(loader.getBatch("car.obj"),-10,track, 1, "Piros");
+	Car* car2=new Car(loader.getBatch("car2.obj"),10,track, 2,"Kék");
 	cars.push_back(car1);
 	cars.push_back(car2);
 	objectsToDraw.push_back(car1);
 	objectsToDraw.push_back(car2);
-    
+
 	Grass* grass=new Grass(3);
 	objectsToDraw.push_back(grass);
 	objectsToDraw.push_back(new Sky(4));
-	
+
 	eventHandler = new StateTwoEventHandler(*car1,*car2);
 }
 
@@ -212,29 +212,35 @@ bool Game::LoadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFi
 	GLbyte *pBits;
 	int nWidth, nHeight, nComponents;
 	GLenum eFormat;
-	
+
 	// Read the texture bits
 	pBits = gltReadTGABits(szFileName, &nWidth, &nHeight, &nComponents, &eFormat);
-	if(pBits == NULL) 
+	if(pBits == NULL)
 		return false;
-	
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode);
-	
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-    
+
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, 0, nComponents, nWidth, nHeight, 0,
 				 eFormat, GL_UNSIGNED_BYTE, pBits);
-	
+
     free(pBits);
-    
-    if(minFilter == GL_LINEAR_MIPMAP_LINEAR || 
+
+    if(minFilter == GL_LINEAR_MIPMAP_LINEAR ||
        minFilter == GL_LINEAR_MIPMAP_NEAREST ||
        minFilter == GL_NEAREST_MIPMAP_LINEAR ||
        minFilter == GL_NEAREST_MIPMAP_NEAREST)
         glGenerateMipmap(GL_TEXTURE_2D);
-    
+
 	return true;
+}
+
+void Game::endGame(std::string nev)
+{
+    std::cout<<"A nyertes kocsi: "<<nev<<std::endl;
+    exit(0);
 }

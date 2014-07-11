@@ -124,9 +124,9 @@ GLdouble DerB(GLdouble u,GLdouble i, GLdouble n)
 {
     GLdouble Der=0;
     if(u==0)
-        u=0.0001;
+        u=0.0000001;
     if(u==1)
-        u=0.9999;
+        u=0.9999999;
 
     Der=-1* (fakt(n)/(fakt(i)*fakt(n-i))) * pow(u,i-1) * pow(1-u,n-i-1) * (n*u-i);
 
