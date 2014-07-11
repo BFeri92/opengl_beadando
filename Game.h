@@ -8,6 +8,7 @@
 #include "EventHandler.h"
 #include "Drawable.h"
 #include "Car.h"
+#include "Grass.h"
 #include "Track.h"
 #include "TrackBatch.h"
 #include "TrackPointsBatch.h"
@@ -26,7 +27,7 @@ class Game{
 		Game(); 
 		~Game();
 		Track track;
-		GLuint textures[3];
+		GLuint textures[4];
 		bool LoadTGATexture(const char *szFileName, GLenum minFilter, GLenum magFilter, GLenum wrapMode);
 	public:
 		static const int winWidth=800;

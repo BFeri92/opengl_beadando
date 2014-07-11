@@ -21,7 +21,7 @@ Game::Game() : eventHandler(new EventHandler)
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f );
     //glEnable(GL_CULL_FACE);
     
-    glGenTextures(3, textures);
+    glGenTextures(4, textures);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textures[0]);
     LoadTGATexture("asph.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
@@ -33,6 +33,10 @@ Game::Game() : eventHandler(new EventHandler)
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, textures[2]);
     LoadTGATexture("car2.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, textures[3]);
+    LoadTGATexture("grass.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 
 
 	initStateOne();
@@ -115,6 +119,9 @@ void Game::initStateTwo()
 	cars.push_back(car2);
 	objectsToDraw.push_back(car1);
 	objectsToDraw.push_back(car2);
+    
+	Grass* grass=new Grass(3);
+	objectsToDraw.push_back(grass);
 	
 	eventHandler = new StateTwoEventHandler(*car1,*car2);
 }
