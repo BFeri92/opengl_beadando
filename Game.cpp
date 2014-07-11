@@ -34,7 +34,7 @@ Game::Game() : eventHandler(new EventHandler)
     glBindTexture(GL_TEXTURE_2D, textures[2]);
     LoadTGATexture("car2.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 
-    glActiveTexture(GL_TEXTURE2);
+    glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, textures[3]);
     LoadTGATexture("grass.tga", GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE);
 

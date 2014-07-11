@@ -12,17 +12,17 @@ Grass::Grass(int _textureID) :
     
     M3DVector3f verts[3];
     
-    verts[0][0] = -400.0f;
-    verts[0][1] = -400.0f;
-    verts[0][2] = height;
+    verts[0][0] = -width;
+    verts[0][1] = height;
+    verts[0][2] = -width;
     
     verts[1][0] = 400.0f;
-    verts[1][1] = -400.0f;
-    verts[1][2] = height;
+    verts[1][1] = height;
+    verts[1][2] = -width;
     
     verts[2][0] = 400.0f;
-    verts[2][1] = 400.0f;
-    verts[2][2] = height;
+    verts[2][1] = height;
+    verts[2][2] = 400.0f;
     
     M3DVector3f norms[3];
     
@@ -41,17 +41,17 @@ Grass::Grass(int _textureID) :
         
 	batch->AddTriangle(verts, norms, tex);
     
-    verts[0][0] = 400.0f;
-    verts[0][1] = 400.0f;
-    verts[0][2] = height;
+    verts[0][0] = width;
+    verts[0][1] = height;
+    verts[0][2] = width;
     
-    verts[1][0] = -400.0f;
-    verts[1][1] = 400.0f;
-    verts[1][2] = height;
+    verts[1][0] = -width;
+    verts[1][1] = height;
+    verts[1][2] = width;
     
-    verts[2][0] = -400.0f;
-    verts[2][1] = -400.0f;
-    verts[2][2] = height;
+    verts[2][0] = -width;
+    verts[2][1] = height;
+    verts[2][2] = -width;
     
     tex[0][0] = 1.0f;
     tex[0][1] = 1.0f;
