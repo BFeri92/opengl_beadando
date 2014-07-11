@@ -34,10 +34,10 @@ Grass::Grass(int _textureID) :
     
     tex[0][0] = 0.0f;
     tex[0][1] = 0.0f;
-    tex[1][0] = 1.0f;
+    tex[1][0] = 10.0f;
     tex[1][1] = 0.0f;
-    tex[2][0] = 1.0f;
-    tex[2][1] = 1.0f;
+    tex[2][0] = 10.0f;
+    tex[2][1] = 10.0f;
         
 	batch->AddTriangle(verts, norms, tex);
     
@@ -53,12 +53,12 @@ Grass::Grass(int _textureID) :
     verts[2][1] = height;
     verts[2][2] = -1*width;
     
-    tex[0][0] = 1.0f;
-    tex[0][1] = 1.0f;
-    tex[1][0] = 0.0f;
+    tex[0][0] = 0.0f;
+    tex[0][1] = 0.0f;
+    tex[1][0] = 10.0f;
     tex[1][1] = 0.0f;
-    tex[2][0] = 0.0f;
-    tex[2][1] = 1.0f;
+    tex[2][0] = 10.0f;
+    tex[2][1] = 10.0f;
         
 	batch->AddTriangle(verts, norms, tex);
     

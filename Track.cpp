@@ -36,12 +36,19 @@ int Track::getControlPointIndexAt(Coordinate xy, GLdouble r)
 
 void Track::setControlPointAtIndex(int index,Coordinate xy)
 {
-
-    controlPoints[index]=xy;
+	if (!finalPointSet)
+	{
+		controlPoints[index]=xy;
+	} else
+	{
+		setAfterFinalControlPointAtIndex(index, xy);
+	}
 }
 
 void Track::setAfterFinalControlPointAtIndex(int index,Coordinate xy)
 {
+	
+	std::cout<<"CICCA"<<std::endl;
 
     Coordinate P=controlPoints[index];
     Coordinate displacement;
@@ -232,13 +239,22 @@ GLTriangleBatch* Track::getBatch()
         vTexture[0][0]=0.0f;
         vTexture[0][1]=0.0f;
 
-        vTexture[1][0]=0.0f;
-        vTexture[1][1]=1.0f;
+        vTexture[1][0]=.5f;
+        vTexture[1][1]=0.0f;
 
-        vTexture[2][0]=1.0f;
-        vTexture[2][1]=1.0f;
+        vTexture[2][0]=0.0f;
+        vTexture[2][1]=.5f;
 
         _track->AddTriangle(vVertex,vNormal,vTexture)  ;
+
+        vTexture[0][0]=0.0f;
+        vTexture[0][1]=.5f;
+
+        vTexture[1][0]=.5f;
+        vTexture[1][1]=0.0f;
+
+        vTexture[2][0]=0.5f;
+        vTexture[2][1]=0.5f;
 
         vVertex[0][0]=P22.x;
         vVertex[0][1]=0;
@@ -330,4 +346,6 @@ void Track::finalPoint()
     P0.y=P1.y - (P2.y - P1.y);
     controlPoints.push_back(    Coordinate( P0 )   );
     controlPoints.push_back(    Coordinate( P1 )   );
+    
+    finalPointSet = true;
 }
