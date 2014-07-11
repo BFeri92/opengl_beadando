@@ -18,8 +18,9 @@ class Car : public Drawable
 		double positionOnTrack;
 		double horizPosOnTrack;
 		int speedChange;
-		static const double maxSpeed=0.1;
-		static const double speedIncPerSec=0.0000001;
+		static const double maxSpeed=0.00035;
+		static const double speedIncPerSec=0.000001;
+		static const double speedAutoDecPerSec=0.00000001;
 		int textureID;
 	public:
 		static const int KEEP_SPEED=0;

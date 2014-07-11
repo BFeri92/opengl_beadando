@@ -34,6 +34,10 @@ void Car::paint(const M3DMatrix44f& viewMatrix, const M3DMatrix44f& projectionMa
 void Car::step()
 {
 	speed += speedChange * speedIncPerSec * timer.GetElapsedSeconds();
+	double decr=0;
+	if (speed>0) decr=speedAutoDecPerSec;
+	else if (speed<0) decr=-1*speedAutoDecPerSec;
+	speed -= decr*timer.GetElapsedSeconds();
 	if (speed>maxSpeed) speed=maxSpeed;
 	if (speed<-1*maxSpeed) speed=-1*maxSpeed;
 	positionOnTrack+=speed;
