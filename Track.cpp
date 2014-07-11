@@ -75,30 +75,30 @@ void Track::setAfterFinalControlPointAtIndex(int index,Coordinate xy)
         if( index==1 )
         {
             controlPoints[1]=xy;
-
+/*
             controlPoints[0].x+=displacement.x;
             controlPoints[0].y+=displacement.y;
 
             controlPoints[(controlPoints.size()-1)].x+=displacement.x;
             controlPoints[(controlPoints.size()-1)].y+=displacement.y;
-
-            controlPoints[(controlPoints.size()-2)].x+=displacement.x;
-            controlPoints[(controlPoints.size()-2)].y+=displacement.y;
+*/
+            controlPoints[(controlPoints.size()-2)].x-=displacement.x;
+            controlPoints[(controlPoints.size()-2)].y-=displacement.y;
 
         }
 
         if( index==(controlPoints.size()-2))
         {
             controlPoints[(controlPoints.size()-2)]=xy;
-
+/*
             controlPoints[0].x+=displacement.x;
             controlPoints[0].y+=displacement.y;
 
             controlPoints[(controlPoints.size()-1)].x+=displacement.x;
             controlPoints[(controlPoints.size()-1)].y+=displacement.y;
-
-            controlPoints[1].x+=displacement.x;
-            controlPoints[1].y+=displacement.y;
+*/
+            controlPoints[1].x-=displacement.x;
+            controlPoints[1].y-=displacement.y;
 
         }
 
