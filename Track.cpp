@@ -47,19 +47,18 @@ void Track::setControlPointAtIndex(int index,Coordinate xy)
 
 void Track::setAfterFinalControlPointAtIndex(int index,Coordinate xy)
 {
-	
-	std::cout<<"CICCA"<<std::endl;
+
+
 
     Coordinate P=controlPoints[index];
     Coordinate displacement;
 
-    displacement.x= P.x - xy.x ;
-    displacement.y= P.x - xy.y ;
-
+    displacement.x= xy.x  - P.x;
+    displacement.y= xy.y  - P.y;
 
     if(index!=0 || index!=1 || index!=(controlPoints.size()-1) || index!=(controlPoints.size()-2) )
         controlPoints[index]=xy;
-    else
+
     {
 
         if( index == 0 || index == (controlPoints.size()-1) )
@@ -346,6 +345,6 @@ void Track::finalPoint()
     P0.y=P1.y - (P2.y - P1.y);
     controlPoints.push_back(    Coordinate( P0 )   );
     controlPoints.push_back(    Coordinate( P1 )   );
-    
+
     finalPointSet = true;
 }
